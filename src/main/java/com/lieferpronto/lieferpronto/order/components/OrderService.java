@@ -4,29 +4,36 @@ import com.lieferpronto.lieferpronto.order.models.Order;
 import com.lieferpronto.lieferpronto.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class OrderService {
 
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
+
+    public Optional<Order> findById(UUID id) {
+        return orderRepository.findById(id);
+    }
 
     public List<Order> findAll() {
-
         var orders = new ArrayList<Order>();
         orderRepository.findAll().forEach(orders::add);
-
         return orders;
     }
 
-    public ResponseEntity<Order> createOrder(Order order) {
+    public Order saveOrder(Order order) {
         orderRepository.save(order);
-        return new ResponseEntity<>(order, HttpStatus.CREATED);
+        return order;
     }
+
+    public void deleteOrder(Order order) {
+        orderRepository.deleteById(order.getId());
+    }
+
 }

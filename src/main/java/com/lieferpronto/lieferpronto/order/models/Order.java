@@ -11,7 +11,9 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
