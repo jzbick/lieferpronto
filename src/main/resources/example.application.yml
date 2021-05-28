@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: <username>
+    password: <pwd>
+    url: jdbc:mysql://localhost:3306/lieferpronto
+  jpa:
+    hibernate:
+      ddl-auto: update
