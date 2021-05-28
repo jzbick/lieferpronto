@@ -1,7 +1,8 @@
-package com.lieferpronto.lieferpronto.order.service;
+package com.lieferpronto.lieferpronto.order.components;
 
-import com.lieferpronto.lieferpronto.order.model.Order;
+import com.lieferpronto.lieferpronto.order.models.Order;
 import com.lieferpronto.lieferpronto.order.repository.OrderRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class OrderService {
 
-    @Autowired
     private OrderRepository orderRepository;
 
     public List<Order> findAll() {
