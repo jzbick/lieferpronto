@@ -11,15 +11,17 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.Type;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "`order`")
@@ -32,9 +34,11 @@ public class Order {
     @Id
     @Type(type = "uuid-char")
     private UUID id = UUID.randomUUID();
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
     private Date orderDate;
     private Date deliveryDate;
+    @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
     @ManyToMany
     private List<Dish> dishes;
@@ -46,5 +50,4 @@ public class Order {
     private Deliveryman deliveryman;
     @OneToOne
     private Address address;
-
 }
