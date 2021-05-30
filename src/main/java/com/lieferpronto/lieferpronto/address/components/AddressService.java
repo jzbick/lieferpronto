@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -17,16 +18,22 @@ public class AddressService {
 
     private final AddressRepository addressRepository;
 
-    public List<Address> findAll() {
+    public Optional<Adress> findById(UUID id) {
+        return addressRepository.findById(id);
+    }
 
+    public List<Address> findAll() {
         var addresses = new ArrayList<Address>();
         addressRepository.findAll().forEach(addresses::add);
-
         return addresses;
     }
 
-    public ResponseEntity<Address> createOrder(Address address) {
+    public Address saveAddress(Address address) {
         addressRepository.save(address);
-        return new ResponseEntity<>(address, HttpStatus.CREATED);
+        return address;
+    }
+
+    public void deleteAddress(Address address) {
+        addressRepository.deleteById(address.getId());
     }
 }
