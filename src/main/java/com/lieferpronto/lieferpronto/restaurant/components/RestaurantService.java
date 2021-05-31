@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -17,16 +19,22 @@ public class RestaurantService {
 
     private RestaurantRepository restaurantRepository;
 
-    public List<Restaurant> findAll() {
+    public Optional<Restaurant> findById(UUID id) {
+        return restaurantRepository.findById(id);
+    }
 
+    public List<Restaurant> findAll() {
         var restaurants = new ArrayList<Restaurant>();
         restaurantRepository.findAll().forEach(restaurants::add);
-
         return restaurants;
     }
 
-    public ResponseEntity<Restaurant> createOrder(Restaurant restaurant) {
+    public Restaurant saveRestaurant(Restaurant restaurant) {
         restaurantRepository.save(restaurant);
-        return new ResponseEntity<>(restaurant, HttpStatus.CREATED);
+        return restaurant;
+    }
+
+    public void deleteRestaurant(Restaurant restaurant) {
+        restaurantRepository.deleteById(restaurant.getId());
     }
 }

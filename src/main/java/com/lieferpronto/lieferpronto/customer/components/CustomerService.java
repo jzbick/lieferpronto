@@ -4,12 +4,12 @@ import com.lieferpronto.lieferpronto.customer.models.Customer;
 import com.lieferpronto.lieferpronto.customer.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -17,16 +17,22 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
 
-    public List<Customer> findAll() {
+    public Optional<Customer> findById(UUID id) {
+        return customerRepository.findById(id);
+    }
 
+    public List<Customer> findAll() {
         var customers = new ArrayList<Customer>();
         customerRepository.findAll().forEach(customers::add);
-
         return customers;
     }
 
-    public ResponseEntity<Customer> createOrder(Customer customer) {
+    public Customer saveCustomer(Customer customer) {
         customerRepository.save(customer);
-        return new ResponseEntity<>(customer, HttpStatus.CREATED);
+        return customer;
+    }
+
+    public void deleteCustomer(Customer customer) {
+        customerRepository.deleteById(customer.getId());
     }
 }
