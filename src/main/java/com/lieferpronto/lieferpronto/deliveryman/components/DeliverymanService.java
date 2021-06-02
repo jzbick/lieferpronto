@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -20,9 +22,9 @@ public class DeliverymanService {
     }
 
     public List<Deliveryman> findAll() {
-        var deliverymans = new ArrayList<Deliveryman>();
-        deliverymanRepository.findAll().forEach(deliveryman::add);
-        return deliverymans;
+        var deliverymen = new ArrayList<Deliveryman>();
+        deliverymanRepository.findAll().forEach(deliverymen::add);
+        return deliverymen;
     }
 
     public Deliveryman saveDeliveryman(Deliveryman deliveryman) {

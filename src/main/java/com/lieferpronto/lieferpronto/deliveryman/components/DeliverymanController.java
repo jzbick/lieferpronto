@@ -1,5 +1,6 @@
 package com.lieferpronto.lieferpronto.deliveryman.components;
 
+import com.lieferpronto.lieferpronto.deliveryman.models.Deliveryman;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import java.util.UUID;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
 public class DeliverymanController {
-    
+
     private final DeliverymanService deliverymanService;
 
     @GetMapping("/{id}")
