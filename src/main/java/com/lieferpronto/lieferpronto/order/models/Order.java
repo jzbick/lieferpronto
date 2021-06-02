@@ -50,4 +50,5 @@ public class Order {
     private Deliveryman deliveryman;
     @OneToOne
     private Address address;
+
 }
