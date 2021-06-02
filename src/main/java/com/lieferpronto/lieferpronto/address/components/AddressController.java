@@ -21,13 +21,13 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/address")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@slf4j
-public class AddressController{
+@Slf4j
+public class AddressController {
 
     private final AddressService addressService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Address> getAddressById(@PathVariable String id){
+    public ResponseEntity<Address> getAddressById(@PathVariable String id) {
         Optional<Address> address = addressService.findById(UUID.fromString(id));
         if (address.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -56,6 +56,7 @@ public class AddressController{
             return new ResponseEntity<>(String.format("Address with id: %s doesn't exist", id), HttpStatus.NOT_FOUND);
         }
         addressService.deleteAddress(addressOptional.get());
-        return new ResponseEntity<>(String.format("Successfully deleted address with id: %s", addressOptional.get().getId()), HttpStatus.OK);
+        return new ResponseEntity<>(String.format("Successfully deleted address with id: %s", addressOptional.get().getId()),
+            HttpStatus.OK);
     }
 }
