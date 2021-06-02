@@ -4,12 +4,11 @@ import com.lieferpronto.lieferpronto.address.models.Address;
 import com.lieferpronto.lieferpronto.address.repository.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -18,7 +17,7 @@ public class AddressService {
 
     private final AddressRepository addressRepository;
 
-    public Optional<Adress> findById(UUID id) {
+    public Optional<Address> findById(UUID id) {
         return addressRepository.findById(id);
     }
 
