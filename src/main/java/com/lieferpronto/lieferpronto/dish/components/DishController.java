@@ -1,5 +1,6 @@
 package com.lieferpronto.lieferpronto.dish.components;
 
+import com.lieferpronto.lieferpronto.dish.models.Dish;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class DishController {
         if (dishOptional.isEmpty()) {
             return new ResponseEntity<>(String.format("Dish with id: %s doesn't exist", id), HttpStatus.NOT_FOUND);
         }
-        dishervice.deleteDish(dishOptional.get());
+        dishService.deleteDish(dishOptional.get());
         return new ResponseEntity<>(String.format("Successfully deleted dish with id: %s", dishOptional.get().getId()), HttpStatus.OK);
     }
 }

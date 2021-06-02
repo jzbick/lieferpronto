@@ -1,5 +1,6 @@
 package com.lieferpronto.lieferpronto.customer.components;
 
+import com.lieferpronto.lieferpronto.customer.models.Customer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
