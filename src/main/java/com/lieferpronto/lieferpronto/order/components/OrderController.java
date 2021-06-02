@@ -45,9 +45,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<String> createOrUpdateOrder(@RequestBody Order order) {
-        return new ResponseEntity<>(String.format("Successfully updated or created order with id: %s",
-                orderService.saveOrder(order).getId()),
-                HttpStatus.OK);
+        return new ResponseEntity<>(String.format("Successfully updated or created order with id: %s", orderService.saveOrder(order).getId()), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
