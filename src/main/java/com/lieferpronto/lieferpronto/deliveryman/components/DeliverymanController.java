@@ -1,5 +1,7 @@
 package com.lieferpronto.lieferpronto.deliveryman.components;
 
+import com.lieferpronto.lieferpronto.address.components.AddressService;
+import com.lieferpronto.lieferpronto.address.models.Address;
 import com.lieferpronto.lieferpronto.deliveryman.models.Deliveryman;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,7 @@ import java.util.UUID;
 public class DeliverymanController {
 
     private final DeliverymanService deliverymanService;
+    private final AddressService addressService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Deliveryman> getDeliverymanById(@PathVariable String id) {
@@ -43,8 +46,18 @@ public class DeliverymanController {
 
     @PostMapping
     public ResponseEntity<String> createOrUpdateDeliveryman(@RequestBody Deliveryman deliveryman) {
+        Address address = deliveryman.getAddress();
+        Optional<Address> optionalAddress = addressService.findAddressByCityAndZipAndStreet(address);
+        optionalAddress.ifPresentOrElse(
+            deliveryman::setAddress,
+            () -> {
+                address.setId(addressService.saveAddress(address).getId());
+                deliveryman.setAddress(address);
+            }
+        );
+        UUID deliverymanId = deliverymanService.saveDeliveryman(deliveryman).getId();
         return new ResponseEntity<>(String.format("Successfully updated or created deliveryman with id: %s",
-            deliverymanService.saveDeliveryman(deliveryman).getId()),
+            deliverymanId),
             HttpStatus.OK);
     }
 
@@ -56,6 +69,7 @@ public class DeliverymanController {
             return new ResponseEntity<>(String.format("Deliveryman with id: %s doesn't exist", id), HttpStatus.NOT_FOUND);
         }
         deliverymanService.deleteDeliveryman(deliverymanOptional.get());
-        return new ResponseEntity<>(String.format("Successfully deleted deliveryman with id: %s", deliverymanOptional.get().getId()), HttpStatus.OK);
+        return new ResponseEntity<>(String.format("Successfully deleted deliveryman with id: %s", deliverymanOptional.get().getId()),
+            HttpStatus.OK);
     }
 }

@@ -1,5 +1,7 @@
 package com.lieferpronto.lieferpronto.restaurant.components;
 
+import com.lieferpronto.lieferpronto.address.components.AddressService;
+import com.lieferpronto.lieferpronto.address.models.Address;
 import com.lieferpronto.lieferpronto.restaurant.models.Restaurant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,7 @@ import java.util.UUID;
 public class RestaurantController {
 
     private final RestaurantService restaurantService;
+    private final AddressService addressService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Restaurant> getRestaurantById(@PathVariable String id) {
@@ -43,8 +46,17 @@ public class RestaurantController {
 
     @PostMapping
     public ResponseEntity<String> createOrUpdateRestaurant(@RequestBody Restaurant restaurant) {
-        return new ResponseEntity<>(String.format("Successfully updated or created restaurant with id: %s",
-            restaurantService.saveRestaurant(restaurant).getId()),
+        Address address = restaurant.getAddress();
+        Optional<Address> optionalAddress = addressService.findAddressByCityAndZipAndStreet(address);
+        optionalAddress.ifPresentOrElse(
+            restaurant::setAddress,
+            () -> {
+                address.setId(addressService.saveAddress(address).getId());
+                restaurant.setAddress(address);
+            });
+        UUID restaurantId = restaurantService.saveRestaurant(restaurant).getId();
+        return new ResponseEntity<>(
+            String.format("Successfully updated or created restaurant with id: %s", restaurantId),
             HttpStatus.OK);
     }
 
@@ -56,6 +68,7 @@ public class RestaurantController {
             return new ResponseEntity<>(String.format("Restaurant with id: %s doesn't exist", id), HttpStatus.NOT_FOUND);
         }
         restaurantService.deleteRestaurant(restaurantOptional.get());
-        return new ResponseEntity<>(String.format("Successfully deleted restaurant with id: %s", restaurantOptional.get().getId()), HttpStatus.OK);
+        return new ResponseEntity<>(String.format("Successfully deleted restaurant with id: %s", restaurantOptional.get().getId()),
+            HttpStatus.OK);
     }
 }
