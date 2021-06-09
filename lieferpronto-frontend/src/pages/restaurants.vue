@@ -4,7 +4,7 @@
   <a-list :dataSource="restaurants"
           split>
     <template #renderItem="{item}">
-      <router-link :to="`/${item.id}`">
+      <router-link :to="`/${item.slug}`">
         <a-list-item>
           <a-list-item-meta
               :description="item.description"
@@ -20,20 +20,17 @@
 </template>
 
 <script lang="ts">
-import { AxiosResponse } from 'axios';
 import { defineComponent } from 'vue';
-import { Restaurant } from '../types/restaurant';
 
 export default defineComponent({
   name: 'restaurants',
-  data() {
-    return {
-      restaurants: [] as Restaurant[]
-    };
+  computed: {
+    restaurants() {
+      return this.$store.state.restaurants;
+    }
   },
-  async beforeCreate() {
-    const response = await this.$http.get(`${import.meta.env.VITE_API_BASE_URL}/restaurants`) as AxiosResponse<Restaurant[]>;
-    this.restaurants = response.data;
+  mounted() {
+    this.$store.dispatch('setCart', []);
   }
 });
 </script>

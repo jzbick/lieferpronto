@@ -67,6 +67,7 @@ export interface Dish {
 export interface Restaurant {
     id: string;
     name: string;
+    slug: string;
     email: string;
     password: string;
     minOrderValue: number;

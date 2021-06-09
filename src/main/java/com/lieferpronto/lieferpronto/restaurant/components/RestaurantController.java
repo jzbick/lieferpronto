@@ -2,6 +2,8 @@ package com.lieferpronto.lieferpronto.restaurant.components;
 
 import com.lieferpronto.lieferpronto.address.components.AddressService;
 import com.lieferpronto.lieferpronto.address.models.Address;
+import com.lieferpronto.lieferpronto.dish.components.DishService;
+import com.lieferpronto.lieferpronto.dish.models.Dish;
 import com.lieferpronto.lieferpronto.restaurant.models.Restaurant;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,7 @@ public class RestaurantController {
 
     private final RestaurantService restaurantService;
     private final AddressService addressService;
+    private final DishService dishService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Restaurant> getRestaurantById(@PathVariable String id) {
@@ -37,6 +40,15 @@ public class RestaurantController {
         } else {
             return new ResponseEntity<>(restaurant.get(), HttpStatus.OK);
         }
+    }
+
+    @GetMapping("/{id}/dishes")
+    public ResponseEntity<List<Dish>> getDishes(@PathVariable String id) {
+        Optional<Restaurant> restaurant = restaurantService.findById(UUID.fromString(id));
+
+        return restaurant.map(value -> new ResponseEntity<>(dishService.findAllByRestaurant(value), HttpStatus.OK))
+            .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
     }
 
     @GetMapping
