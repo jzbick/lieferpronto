@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/resturants")
+@RequestMapping("/restaurants")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
 public class RestaurantController {
