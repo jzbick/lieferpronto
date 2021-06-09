@@ -26,6 +26,7 @@ public class Restaurant {
     @Id
     @Type(type = "uuid-char")
     private UUID id = UUID.randomUUID();
+    private String slug;
     private String name;
     private String email;
     private String password;
