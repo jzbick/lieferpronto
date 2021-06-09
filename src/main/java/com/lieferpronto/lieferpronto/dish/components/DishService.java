@@ -2,6 +2,7 @@ package com.lieferpronto.lieferpronto.dish.components;
 
 import com.lieferpronto.lieferpronto.dish.models.Dish;
 import com.lieferpronto.lieferpronto.dish.repository.DishRepository;
+import com.lieferpronto.lieferpronto.restaurant.models.Restaurant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,10 +16,14 @@ import java.util.UUID;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class DishService {
 
-    private DishRepository dishRepository;
+    private final DishRepository dishRepository;
 
     public Optional<Dish> findById(UUID id) {
         return dishRepository.findById(id);
+    }
+
+    public List<Dish> findAllByRestaurant(Restaurant restaurant) {
+        return dishRepository.findAllByRestaurant(restaurant);
     }
 
     public List<Dish> findAll() {

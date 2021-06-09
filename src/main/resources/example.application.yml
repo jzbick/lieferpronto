@@ -9,4 +9,4 @@ spring:
     sql-script-encoding: utf-8
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
