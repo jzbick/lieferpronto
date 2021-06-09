@@ -21,6 +21,10 @@ public class AddressService {
         return addressRepository.findById(id);
     }
 
+    public Optional<Address> findAddressByCityAndZipAndStreet(Address address) {
+        return addressRepository.findAddressByCityAndZipAndStreet(address.getCity(), address.getZip(), address.getStreet());
+    }
+
     public List<Address> findAll() {
         var addresses = new ArrayList<Address>();
         addressRepository.findAll().forEach(addresses::add);

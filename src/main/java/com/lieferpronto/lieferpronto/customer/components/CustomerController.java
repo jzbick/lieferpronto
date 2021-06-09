@@ -1,5 +1,7 @@
 package com.lieferpronto.lieferpronto.customer.components;
 
+import com.lieferpronto.lieferpronto.address.components.AddressService;
+import com.lieferpronto.lieferpronto.address.models.Address;
 import com.lieferpronto.lieferpronto.customer.models.Customer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,6 +28,7 @@ import java.util.UUID;
 public class CustomerController {
 
     private final CustomerService customerService;
+    private final AddressService addressService;
 
     @GetMapping("/{id}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable String id) {
@@ -43,6 +47,17 @@ public class CustomerController {
 
     @PostMapping
     public ResponseEntity<String> createOrUpdateCustomer(@RequestBody Customer customer) {
+        List<Address> addresses = new ArrayList<>();
+        customer.getAddresses().forEach(address -> {
+            Optional<Address> optionalAddress = addressService.findAddressByCityAndZipAndStreet(address);
+            optionalAddress.ifPresentOrElse(
+                addresses::add,
+                () -> {
+                    address.setId(addressService.saveAddress(address).getId());
+                    addresses.add(address);
+                });
+        });
+        customer.setAddresses(addresses);
         return new ResponseEntity<>(String.format("Successfully updated or created customer with id: %s",
             customerService.saveCustomer(customer).getId()),
             HttpStatus.OK);
@@ -56,6 +71,7 @@ public class CustomerController {
             return new ResponseEntity<>(String.format("Customer with id: %s doesn't exist", id), HttpStatus.NOT_FOUND);
         }
         customerService.deleteCustomer(customerOptional.get());
-        return new ResponseEntity<>(String.format("Successfully deleted customer with id: %s", customerOptional.get().getId()), HttpStatus.OK);
+        return new ResponseEntity<>(String.format("Successfully deleted customer with id: %s", customerOptional.get().getId()),
+            HttpStatus.OK);
     }
 }
