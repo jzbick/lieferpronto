@@ -4,8 +4,6 @@ import com.lieferpronto.lieferpronto.restaurant.models.Restaurant;
 import com.lieferpronto.lieferpronto.restaurant.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,7 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class RestaurantService {
 
-    private RestaurantRepository restaurantRepository;
+    private final RestaurantRepository restaurantRepository;
 
     public Optional<Restaurant> findById(UUID id) {
         return restaurantRepository.findById(id);
