@@ -1,6 +1,7 @@
 package com.lieferpronto.lieferpronto.order.components;
 
 import com.lieferpronto.lieferpronto.order.models.Order;
+import com.lieferpronto.lieferpronto.order.models.OrderStatus;
 import com.lieferpronto.lieferpronto.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,4 +37,8 @@ public class OrderService {
         orderRepository.deleteById(order.getId());
     }
 
+    public void updateOrderStatus(Order order, OrderStatus status) {
+        order.setStatus(status);
+        orderRepository.save(order);
+    }
 }

@@ -9,6 +9,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.List;
 @Setter
 @ToString
 public class Deliveryman extends Person {
+    @Enumerated(EnumType.STRING)
     private DeliveryMethod deliveryMethod;
     @OneToOne
     private Address address;

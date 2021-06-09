@@ -1,3 +1,3 @@
 package com.lieferpronto.lieferpronto.order.models;
 
-enum OrderStatus {OPEN, INPROGRESS, INDELIVERY, DELIVERED}
+public enum OrderStatus {ORDERED, IN_PROGRESS, IN_DELIVERY, DELIVERED}

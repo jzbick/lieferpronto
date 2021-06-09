@@ -1,6 +1,7 @@
 package com.lieferpronto.lieferpronto.order.components;
 
 import com.lieferpronto.lieferpronto.order.models.Order;
+import com.lieferpronto.lieferpronto.order.models.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,8 +46,8 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<String> createOrUpdateOrder(@RequestBody Order order) {
         return new ResponseEntity<>(String.format("Successfully updated or created order with id: %s",
-            orderService.saveOrder(order).getId()),
-            HttpStatus.OK);
+                orderService.saveOrder(order).getId()),
+                HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -57,5 +59,16 @@ public class OrderController {
         }
         orderService.deleteOrder(orderOptional.get());
         return new ResponseEntity<>(String.format("Successfully deleted order with id: %s", orderOptional.get().getId()), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<String> updateOrderStatus(@PathVariable UUID id, @RequestBody OrderStatus status) {
+        Optional<Order> orderOptional = orderService.findById(id);
+
+        if (orderOptional.isEmpty()) {
+            return new ResponseEntity<>(String.format("Order with id: %s doesn't exist", id), HttpStatus.NOT_FOUND);
+        }
+        orderService.updateOrderStatus(orderOptional.get(), status);
+        return new ResponseEntity<>(String.format("Successfully updated orderstatus of order: %s to %s", orderOptional.get().getId(), status), HttpStatus.OK);
     }
 }
